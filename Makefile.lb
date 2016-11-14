@@ -13,6 +13,9 @@ clean:
 build:
 	$(MAKE) -f Makefile build
 
+debug:
+	$(MAKE) -f Makefile build CONFIGURATION=DEBUG
+
 install_dir:
 	$(Q)mkdir -p $(MY_COMPONENT_PATH)/$(OSMOSIS_INSTALL_DIR)/
 
