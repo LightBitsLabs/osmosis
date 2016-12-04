@@ -1,3 +1,8 @@
+include $(WORKSPACE_TOP)/common/Makefile.env
+
+MY_COMPONENT_PATH := $(shell component-tool localpath --repo=osmosis osmosis)
+OSMOSIS_INSTALL_DIR:=./
+
 all: 
 	$(MAKE) clean
 	$(MAKE) build unittest check_convention CONFIGURATION=DEBUG
@@ -39,6 +44,14 @@ install:
 	if [ -d "/etc/bash_completion.d" ]; then \
 		sudo cp bash.completion.sh /etc/bash_completion.d/osmosis.sh; \
 	fi
+
+
+lbinstall_dir:
+	$(Q)mkdir -p $(MY_COMPONENT_PATH)/$(OSMOSIS_INSTALL_DIR)/
+
+.PHONY: lbinstall
+lbinstall: lbinstall_dir
+	$(Q)cp -f build/cpp/osmosis.bin $(MY_COMPONENT_PATH)/$(OSMOSIS_INSTALL_DIR)/
 
 install_service_systemd:
 	python py/get_system_setting.py serviceFilesDirPath
