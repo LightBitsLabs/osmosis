@@ -171,7 +171,7 @@ void purge( const boost::program_options::variables_map & options )
 
 	// adding task per dir
 	for(auto& entry : boost::make_iterator_range(boost::filesystem::directory_iterator( rootPath ), {})) {
-		if ( entry.path().string().length() == 31) {
+		if ( entry.path().stem().string().length() == 2) {
 			TRACE_INFO( "Adding a task for " << entry.path() );
 			boost::filesystem::path entryPath( entry.path() );
 			purgeTasks.put( std::move( entryPath ) );

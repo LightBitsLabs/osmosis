@@ -21,8 +21,10 @@ void Purge::purge( boost::filesystem::path & dirToPurge )
 	size_t after = _staleHashes.size();
 	TRACE_INFO( "Purge found " << after << " objects to purge (" <<
 			( before - after ) << " remain)" );
-	for ( auto & hash : _staleHashes )
-		boost::filesystem::remove( _store.filenameForExisting( hash ) );
+	for ( auto & hash : _staleHashes ){
+		if ( _store.exists( hash ) )
+			boost::filesystem::remove( _store.filenameForExisting( hash ) );
+	}
 	BACKTRACE_END
 }
 
