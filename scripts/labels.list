@@ -1,0 +1,13 @@
+mgmt-debs
+duroslight-rpms
+__rpms__
+discovery-service
+discovery-client
+memaslap__dev
+rootfs_booking
+management_server
+ycsb
+netperf
+lbctl__rel
+__lf__rel
+lightbox-exporter

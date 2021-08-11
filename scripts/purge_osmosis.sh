@@ -1,17 +1,40 @@
 #!/bin/bash
 
-allLabels=(mgmt-debs duroslight-rpms __rpms__ discovery-service discovery-client memaslap__dev rootfs_booking
-management_server ycsb netperf lbctl__rel __lf__rel lightbox-exporter)
+help=${help:-false}
+labels_path=${labels_file:-/scripts/labels.list}
+osmosis_bin_path=${osmosis_bin_path:-/osmosis.bin}
+objectstore_path=${object_store_path:-/data}
+
+while [ $# -gt 0 ]; do
+
+   if [[ $1 == *"--"* ]]; then
+        param="${1/--/}"
+        declare $param="$2"
+   fi
+
+  shift
+done
+
+if [[ $help != "false" ]]; then
+      cat Readme.md
+      exit
+fi
+
+echo -e "\nGoing to use the following parameters:\n"
+echo -e "   labels_path:      '$labels_path'"
+echo -e "   osmosis_bin_path: '$osmosis_bin_path'"
+echo -e "   objectstore_path: '$objectstore_path'"
 
 cd /data/labels
 
-echo going to erase labels
-for label in "${allLabels[@]}"; do
-    echo erasing label: "$label"
+echo -e "\nErasing labels..."
+for label in $(cat $labels_path); do
+    echo -e "   erasing label: $label"
     ls | grep "$label" | while read line; do /osmosis.bin eraselabel $line ; done
 done
-echo finished erasing labels
+echo -e "Erase finished!\n"
 
-echo going to purge osmosis, this may take a while...
-/osmosis.bin purge --objectStoreRootPath=/data
-echo all done! exiting...
+echo -e "Going to purge osmosis, this may take a while..."
+echo -e "   Executing command: $osmosis_bin_path purge --objectStoreRootPath=$objectstore_path\n"
+$osmosis_bin_path purge --objectStoreRootPath=$objectstore_path
+echo -e "\nAll done! Exiting...\n"
