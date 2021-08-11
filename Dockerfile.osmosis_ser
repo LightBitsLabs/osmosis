@@ -16,12 +16,17 @@ COPY --from=builder /osmosis/build/cpp/osmosis.bin /usr/local/bin/
 
 RUN apt-get update && apt-get install -y python3-pip\
                                          python3-gevent\
-                                         libssl-dev
+                                         libssl-dev\
+                                         vim
 
 RUN pip3 install --upgrade pip && pip3 install ipython PyYAML
 
 RUN mkdir /data
 
 VOLUME ["/data"]
+
+RUN mkdir /scripts
+
+COPY scripts/purge_osmosis.sh /scripts/
 
 CMD ["sh" ,"-c", "/usr/local/bin/osmosis.bin server --objectStoreRootPath /data"]
