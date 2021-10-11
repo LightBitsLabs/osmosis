@@ -50,7 +50,15 @@ void Store::putExistingFile( const Hash & hash, const boost::filesystem::path & 
 	boost::filesystem::path dirPath = absolute.parent_path();
 	recoverInCaseOfDirectoryCorruption( dirPath );
 	boost::filesystem::create_directories( dirPath );
-	boost::filesystem::rename( filename, absolute );
+	try{
+	    boost::filesystem::rename( filename, absolute );
+	}
+	catch(...){
+	    if (!boost::filesystem::equivalent(filename, absolute)){
+            boost::filesystem::copy_file(filename, absolute);
+            boost::filesystem::remove(filename);
+	    }
+	}
 	BACKTRACE_END_VERBOSE( "Hash " << hash << " Filename " << filename );
 }
 

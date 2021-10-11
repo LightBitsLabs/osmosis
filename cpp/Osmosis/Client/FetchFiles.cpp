@@ -108,7 +108,16 @@ void FetchFiles::commitOne()
 		return;
 	}
 	boost::filesystem::path absolute = _directory / task.path;
-	boost::filesystem::rename( task.draft, absolute );
+	try{
+        boost::filesystem::rename( task.draft, absolute );
+	}
+	catch(...){
+	    if (!boost::filesystem::equivalent(task.draft, absolute)){
+            boost::filesystem::copy_file(task.draft, absolute);
+            boost::filesystem::remove(task.draft);
+	    }
+	}
+
 	ApplyFileStatus( absolute, task.status ).applyExistingRegular();
 	ASSERT_VERBOSE( FileStatus( absolute ) == task.status,
 			absolute << ": " << FileStatus( absolute ) << " != " << task.status );

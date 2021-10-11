@@ -111,7 +111,19 @@ void Labels::rename( const std::string & from, const std::string & to )
 	ASSERT( not exists( to ) );
 	ASSERT( FilesystemUtils::safeFilename( from ) );
 	ASSERT( FilesystemUtils::safeFilename( to ) );
-	boost::filesystem::rename( absoluteFilename( from ), absoluteFilename( to ) );
+
+	boost::filesystem::path abs_from = absoluteFilename( from );
+	boost::filesystem::path abs_to = absoluteFilename( to );
+	try{
+        boost::filesystem::rename( abs_from, abs_to );
+	}
+	catch(...){
+	    if (!boost::filesystem::equivalent(abs_from, abs_to)){
+            boost::filesystem::copy_file(abs_from, abs_to);
+            boost::filesystem::remove(abs_from);
+	    }
+	}
+
 	Hash hash( readLabelNoLog( to ) );
 	_log.remove( from, hash );
 	_log.set( to, hash );
