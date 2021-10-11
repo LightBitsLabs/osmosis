@@ -2,6 +2,7 @@
 #include "Osmosis/Hash.h"
 #include "Osmosis/CalculateHash.h"
 #include "Osmosis/ObjectStore/ObjectsIterator.h"
+#include "Osmosis/CommonUtils.h"
 
 namespace Osmosis {
 namespace ObjectStore
@@ -50,15 +51,7 @@ void Store::putExistingFile( const Hash & hash, const boost::filesystem::path & 
 	boost::filesystem::path dirPath = absolute.parent_path();
 	recoverInCaseOfDirectoryCorruption( dirPath );
 	boost::filesystem::create_directories( dirPath );
-	try{
-	    boost::filesystem::rename( filename, absolute );
-	}
-	catch(...){
-	    if (!boost::filesystem::equivalent(filename, absolute)){
-            boost::filesystem::copy_file(filename, absolute);
-            boost::filesystem::remove(filename);
-	    }
-	}
+	CommonUtils::rename(filename,absolute);
 	BACKTRACE_END_VERBOSE( "Hash " << hash << " Filename " << filename );
 }
 
