@@ -4,6 +4,7 @@
 #include "Osmosis/ObjectStore/LabelsIterator.h"
 #include "Osmosis/ObjectStore/DirectoryNames.h"
 #include "Common/Container.h"
+#include "Osmosis/CommonUtils.h"
 
 namespace Osmosis {
 namespace ObjectStore
@@ -111,7 +112,7 @@ void Labels::rename( const std::string & from, const std::string & to )
 	ASSERT( not exists( to ) );
 	ASSERT( FilesystemUtils::safeFilename( from ) );
 	ASSERT( FilesystemUtils::safeFilename( to ) );
-	boost::filesystem::rename( absoluteFilename( from ), absoluteFilename( to ) );
+	CommonUtils::rename(absoluteFilename( from ), absoluteFilename( to ));
 	Hash hash( readLabelNoLog( to ) );
 	_log.remove( from, hash );
 	_log.set( to, hash );

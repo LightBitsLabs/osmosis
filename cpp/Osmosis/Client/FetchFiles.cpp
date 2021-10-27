@@ -3,6 +3,7 @@
 #include "Osmosis/ApplyFileStatus.h"
 #include "Osmosis/Chain/Chain.h"
 #include "Osmosis/Client/DigestDrafts.h"
+#include "Osmosis/CommonUtils.h"
 
 namespace Osmosis {
 namespace Client
@@ -107,8 +108,10 @@ void FetchFiles::commitOne()
 		_fetchQueue.put( std::move( reenqueued ) );
 		return;
 	}
+
 	boost::filesystem::path absolute = _directory / task.path;
-	boost::filesystem::rename( task.draft, absolute );
+	CommonUtils::rename(task.draft, absolute);
+
 	ApplyFileStatus( absolute, task.status ).applyExistingRegular();
 	ASSERT_VERBOSE( FileStatus( absolute ) == task.status,
 			absolute << ": " << FileStatus( absolute ) << " != " << task.status );
