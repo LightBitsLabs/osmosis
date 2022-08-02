@@ -1,2 +1,2 @@
-#include "../build/cpp-netlib-0.11.1-final/libs/network/src/client.cpp"
-#include "../build/cpp-netlib-0.11.1-final/libs/network/src/uri/uri.cpp"
+#include "../build/cpp-netlib-0.13.0-final/libs/network/src/client.cpp"
+#include "../build/cpp-netlib-0.13.0-final/libs/network/src/uri/uri.cpp"

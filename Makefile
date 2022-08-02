@@ -1,4 +1,4 @@
-all: 
+all:
 	$(MAKE) clean
 	$(MAKE) build unittest check_convention CONFIGURATION=DEBUG
 	$(MAKE) clean
@@ -8,10 +8,10 @@ clean:
 	rm -fr build dist osmosis.egg-info
 
 .PHONY: build
-build: build/cpp-netlib-0.11.1-final/.unpacked
+build: build/cpp-netlib-0.13.0-final/.unpacked
 	$(MAKE) -f build.Makefile
 
-build/cpp-netlib-0.11.1-final/.unpacked: cpp-netlib-0.11.1-final.tar.gz
+build/cpp-netlib-0.13.0-final/.unpacked: cpp-netlib-0.13.0-final.tar.gz
 	mkdir build > /dev/null 2> /dev/null || true
 	tar -xf $< -C build
 	touch $@
