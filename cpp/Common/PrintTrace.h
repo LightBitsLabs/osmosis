@@ -93,7 +93,7 @@ static inline void printTrace()
         int output = open( output_name, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR );
         dup2( output, 1 );
         dup2( output, 2 );
-        execlp("gdb", "gdb", "--batch", "-n", "-ex", "thread", "-ex", "bt", name_buf, pid_buf, NULL);
+        execlp("gdb", "gdb", "--batch", "-n", "-ex", "thread", "-ex", "bt", name_buf, pid_buf, (void *)NULL);
         abort(); /* If gdb failed to start */
     } else {
         prctl(PR_SET_PTRACER, child_pid, 0, 0, 0);
