@@ -2,8 +2,8 @@ all: all-targets
 
 CONFIGURATION ?= RELEASE
 SHELL ?= /bin/bash
-COMMON_CXXFLAGS = -Ic -Icpp -I/usr/include/python2.7 -Ibuild/cpp-netlib-0.11.1-final -std=gnu++0x -Werror -Wall
-COMMON_CFLAGS = -Ic -Werror -Wall
+COMMON_CXXFLAGS = -Ic -Icpp -I/usr/include/python2.7 -Ibuild/cpp-netlib-0.13.0-final -std=gnu++0x -Werror -Wall -static
+COMMON_CFLAGS = -Ic -Werror -Wall -static
 
 DEBUG_CXXFLAGS = -ggdb -DDEBUG
 DEBUG_CFLAGS = $(DEBUG_CXXFLAGS)
@@ -14,7 +14,7 @@ RELEASE_LDFLAGS = -O3
 
 CXXFLAGS = $(COMMON_CXXFLAGS) $($(CONFIGURATION)_CXXFLAGS)
 CFLAGS = $(COMMON_CFLAGS) $($(CONFIGURATION)_CFLAGS)
-LDFLAGS = -L/usr/lib/x86_64-linux-gnu $($(CONFIGURATION)_LDFLAGS)
+LDFLAGS = -L/usr/lib/x86_64-linux-gnu $($(CONFIGURATION)_LDFLAGS) -static
 
 ifneq ($(PROFILE),)
 CFLAGS += -pg
@@ -27,6 +27,8 @@ if [ -e /usr/lib/x86_64-linux-gnu/libboost_regex-mt.a ] || [ -e /usr/lib/x86_64-
 else \
 	if [ -e /usr/lib64/libboost_regex-mt.a ] || [ -e /usr/lib64/libboost_regex.a ]; then \
 		echo /usr/lib64; \
+	elif [ -e /usr/lib/libboost_regex.a ] ; then \
+		echo /usr/lib; \
 	else \
 		echo BOOST_STATIC_NOT_INSTALLED; \
 	fi; \
