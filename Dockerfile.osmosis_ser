@@ -2,7 +2,7 @@ FROM ubuntu:22.04 AS builder
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
-    apt-get -y install build-essential libboost-all-dev libssl-dev python3-pip && \
+    apt-get -y install build-essential libboost-all-dev libssl-dev python3-pip unzip && \
     pip3 install --no-cache-dir --upgrade pip pep8
 
 ADD . /osmosis
