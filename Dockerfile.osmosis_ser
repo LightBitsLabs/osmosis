@@ -1,16 +1,15 @@
-FROM ubuntu:18.04 AS builder
+FROM ubuntu:22.04 AS builder
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
     apt-get -y install build-essential libboost-all-dev libssl-dev python3-pip && \
-    pip3 install --upgrade pip && \
-    pip3 install pep8
+    pip3 install --no-cache-dir --upgrade pip pep8
 
 ADD . /osmosis
 WORKDIR /osmosis
 RUN make build -j4
 
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 
 COPY --from=builder /osmosis/build/cpp/osmosis.bin /usr/local/bin/
 
@@ -18,7 +17,7 @@ RUN apt-get update && apt-get install -y python3-pip\
                                          python3-gevent\
                                          libssl-dev
 
-RUN pip3 install --upgrade pip && pip3 install ipython PyYAML
+RUN pip3 install --upgrade --no-cache-dir pip && pip3 install --no-cache-dir ipython PyYAML
 
 RUN mkdir /data
 
