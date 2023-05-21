@@ -100,6 +100,11 @@ void LeastRecentlyUsed::keepLabelsFromLabelLogUntilExceedingMaximumDiskUsage()
 			_alreadyProcessedLabels.emplace( entry.label );
 			continue;
 		}
+		if ( !_labels.exists( entry.label ))
+		{
+			_alreadyProcessedLabels.emplace( entry.label );
+			continue;
+		}
 		if ( _alreadyProcessedLabels.find( entry.label ) != _alreadyProcessedLabels.end() )
 			continue;
 
